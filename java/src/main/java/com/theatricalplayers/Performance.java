@@ -1,3 +1,5 @@
+package com.theatricalplayers;
+
 public class Performance {
 
     public String playID;
