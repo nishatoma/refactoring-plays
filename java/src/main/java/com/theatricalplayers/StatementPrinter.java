@@ -9,18 +9,26 @@ import static util.PlayConstants.*;
 public class StatementPrinter {
 
     public String print(Invoice invoice, Map<String, Play> plays) {
-        var totalAmount = 0;
 
-        var result = String.format("Statement for %s\n", invoice.customer);
+        StringBuilder result = new StringBuilder(String.format("Statement for %s\n", invoice.customer));
 
         for (var perf : invoice.performances) {
             // print line for this order
-            result += String.format("  %s: %s (%s seats)\n", getPlay(plays, perf).name, formatUSD(calculateAmount(getPlay(plays, perf), perf)), perf.audience);
-            totalAmount += calculateAmount(getPlay(plays, perf), perf);
+            result.append(String.format("  %s: %s (%s seats)\n", getPlay(plays, perf).name, formatUSD(calculateAmount(getPlay(plays, perf), perf)), perf.audience));
         }
 
-        result += String.format("Amount owed is %s\n", formatUSD(totalAmount));
-        result += String.format("You earned %s credits\n", getTotalVolume(plays, invoice));
+        result.append(String.format("Amount owed is %s\n", formatUSD(getTotalAmount(plays, invoice))));
+        result.append(String.format("You earned %s credits\n", getTotalVolume(plays, invoice)));
+        return result.toString();
+    }
+
+    private static int getTotalAmount(Map<String, Play> plays, Invoice invoice) {
+        var result = 0;
+
+        for (var perf: invoice.performances) {
+            result += calculateAmount(getPlay(plays, perf), perf);
+        }
+
         return result;
     }
 
