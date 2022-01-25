@@ -14,7 +14,7 @@ public class StatementPrinter {
         NumberFormat frmt = NumberFormat.getCurrencyInstance(Locale.US);
 
         for (var perf : invoice.performances) {
-            var play = plays.get(perf.playID);
+            var play = getPlay(plays, perf);
             // calculate the amount using the new method
             var thisAmount = calculateAmount(play, perf);
 
@@ -32,7 +32,11 @@ public class StatementPrinter {
         return result;
     }
 
-    static int calculateAmount(Play play, Performance perf) {
+    private static Play getPlay(Map<String, Play> plays, Performance perf) {
+        return plays.get(perf.playID);
+    }
+
+    private static int calculateAmount(Play play, Performance perf) {
         var result = 0;
 
         switch (play.type) {
