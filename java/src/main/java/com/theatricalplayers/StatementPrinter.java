@@ -17,7 +17,8 @@ public class StatementPrinter {
 
         for (var perf : invoice.performances) {
             // print line for this order
-            result.append(String.format("  %s: %s (%s seats)\n", getPlay(plays, perf).name, formatUSD(calculateAmount(getPlay(plays, perf), perf)), perf.audience));
+            result.append(String.format("  %s: %s (%s seats)\n", getPlay(plays, perf).name,
+                    formatUSD(calculateAmount(getPlay(plays, perf), perf)), perf.getAudience()));
         }
 
         result.append(String.format("Amount owed is %s\n", formatUSD(getTotalAmount(plays, invoice))));
@@ -47,7 +48,7 @@ public class StatementPrinter {
     }
 
     private static Play getPlay(Map<String, Play> plays, Performance perf) {
-        return plays.get(perf.playID);
+        return plays.get(perf.getPlayID());
     }
 
     private static String formatUSD(int number) {
@@ -56,10 +57,10 @@ public class StatementPrinter {
 
     private static int calculateVolumeCredits(Play play, Performance perf) {
         var result = 0;
-        result += Math.max(perf.audience - TRAGEDY_AUDIENCE_LIMIT, result);
+        result += Math.max(perf.getAudience() - TRAGEDY_AUDIENCE_LIMIT, result);
         // add extra credit for every ten comedy attendees
         if ("comedy".equals(play.type)) {
-            result += Math.floor(perf.audience / COMEDY_ATTENDEES);
+            result += Math.floor(perf.getAudience() / COMEDY_ATTENDEES);
         }
 
         return result;
@@ -71,16 +72,16 @@ public class StatementPrinter {
         switch (play.type) {
             case "tragedy":
                 result = TRAGEDY_BASE_AMOUNT;
-                if (perf.audience > TRAGEDY_AUDIENCE_LIMIT) {
-                    result += TRAGEDY_BONUS_AMOUNT * (perf.audience - TRAGEDY_AUDIENCE_LIMIT);
+                if (perf.getAudience() > TRAGEDY_AUDIENCE_LIMIT) {
+                    result += TRAGEDY_BONUS_AMOUNT * (perf.getAudience() - TRAGEDY_AUDIENCE_LIMIT);
                 }
                 break;
             case "comedy":
                 result = COMEDY_BASE_AMOUNT;
-                if (perf.audience > COMEDY_AUDIENCE_LIMIT) {
-                    result += COMEDY_BONUS_AMOUNT + COMEDY_BONUS_MULTIPLIER * (perf.audience - COMEDY_AUDIENCE_LIMIT);
+                if (perf.getAudience() > COMEDY_AUDIENCE_LIMIT) {
+                    result += COMEDY_BONUS_AMOUNT + COMEDY_BONUS_MULTIPLIER * (perf.getAudience() - COMEDY_AUDIENCE_LIMIT);
                 }
-                result += COMEDY_BASE_MULTIPLIER * perf.audience;
+                result += COMEDY_BASE_MULTIPLIER * perf.getAudience();
                 break;
             default:
                 throw new Error("unknown type: " + play.type);
