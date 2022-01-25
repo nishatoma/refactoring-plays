@@ -14,12 +14,10 @@ public class StatementPrinter {
         NumberFormat frmt = NumberFormat.getCurrencyInstance(Locale.US);
 
         for (var perf : invoice.performances) {
-            
-            // add volume credits
-            volumeCredits += Math.max(perf.audience - 30, 0);
-            // add extra credit for every ten comedy attendees
-            if ("comedy".equals(getPlay(plays, perf).type)) volumeCredits += Math.floor(perf.audience / 5);
 
+            // add volume credits
+            volumeCredits += calculateVolumeCredits(getPlay(plays, perf), perf);
+            
             // print line for this order
             result += String.format("  %s: %s (%s seats)\n", getPlay(plays, perf).name, frmt.format(calculateAmount(getPlay(plays, perf), perf) / 100), perf.audience);
             totalAmount += calculateAmount(getPlay(plays, perf), perf);
@@ -31,6 +29,17 @@ public class StatementPrinter {
 
     private static Play getPlay(Map<String, Play> plays, Performance perf) {
         return plays.get(perf.playID);
+    }
+
+    private static int calculateVolumeCredits(Play play, Performance perf) {
+        var volumeCredits = 0;
+        volumeCredits += Math.max(perf.audience - 30, 0);
+        // add extra credit for every ten comedy attendees
+        if ("comedy".equals(play.type)) {
+            volumeCredits += Math.floor(perf.audience / 5);
+        }
+
+        return volumeCredits;
     }
 
     private static int calculateAmount(Play play, Performance perf) {
