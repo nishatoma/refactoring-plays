@@ -4,6 +4,8 @@ import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Map;
 
+import static util.PlayConstants.*;
+
 public class StatementPrinter {
 
     public String print(Invoice invoice, Map<String, Play> plays) {
@@ -57,20 +59,20 @@ public class StatementPrinter {
 
         switch (play.type) {
             case "tragedy":
-                result = 40000;
-                if (perf.audience > 30) {
-                    result += 1000 * (perf.audience - 30);
+                result = TRAGEDY_BASE_AMOUNT;
+                if (perf.audience > TRAGEDY_AUDIENCE_LIMIT) {
+                    result += TRAGEDY_BONUS_AMOUNT * (perf.audience - TRAGEDY_AUDIENCE_LIMIT);
                 }
                 break;
             case "comedy":
-                result = 30000;
-                if (perf.audience > 20) {
-                    result += 10000 + 500 * (perf.audience - 20);
+                result = COMEDY_BASE_AMOUNT;
+                if (perf.audience > COMEDY_AUDIENCE_LIMIT) {
+                    result += COMEDY_BONUS_AMOUNT + COMEDY_BONUS_MULTIPLIER * (perf.audience - COMEDY_AUDIENCE_LIMIT);
                 }
-                result += 300 * perf.audience;
+                result += COMEDY_BASE_MULTIPLIER * perf.audience;
                 break;
             default:
-                throw new Error("unknown type: ${play.type}");
+                throw new Error("unknown type: " + play.type);
         }
         return result;
     }
