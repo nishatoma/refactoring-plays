@@ -11,24 +11,26 @@ public class StatementPrinter {
         var volumeCredits = 0;
         var result = String.format("Statement for %s\n", invoice.customer);
 
-        NumberFormat frmt = NumberFormat.getCurrencyInstance(Locale.US);
-
         for (var perf : invoice.performances) {
 
             // add volume credits
             volumeCredits += calculateVolumeCredits(getPlay(plays, perf), perf);
 
             // print line for this order
-            result += String.format("  %s: %s (%s seats)\n", getPlay(plays, perf).name, frmt.format(calculateAmount(getPlay(plays, perf), perf) / 100), perf.audience);
+            result += String.format("  %s: %s (%s seats)\n", getPlay(plays, perf).name, format(calculateAmount(getPlay(plays, perf), perf) / 100), perf.audience);
             totalAmount += calculateAmount(getPlay(plays, perf), perf);
         }
-        result += String.format("Amount owed is %s\n", frmt.format(totalAmount / 100));
+        result += String.format("Amount owed is %s\n", format(totalAmount / 100));
         result += String.format("You earned %s credits\n", volumeCredits);
         return result;
     }
 
     private static Play getPlay(Map<String, Play> plays, Performance perf) {
         return plays.get(perf.playID);
+    }
+
+    private static String format(int number) {
+        return NumberFormat.getCurrencyInstance(Locale.US).format(number);
     }
 
     private static int calculateVolumeCredits(Play play, Performance perf) {
