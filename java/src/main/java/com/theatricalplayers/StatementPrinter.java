@@ -17,7 +17,7 @@ public class StatementPrinter {
 
             // add volume credits
             volumeCredits += calculateVolumeCredits(getPlay(plays, perf), perf);
-            
+
             // print line for this order
             result += String.format("  %s: %s (%s seats)\n", getPlay(plays, perf).name, frmt.format(calculateAmount(getPlay(plays, perf), perf) / 100), perf.audience);
             totalAmount += calculateAmount(getPlay(plays, perf), perf);
