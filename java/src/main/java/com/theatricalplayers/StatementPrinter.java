@@ -45,10 +45,10 @@ public class StatementPrinter {
 
     private static int calculateVolumeCredits(Play play, Performance perf) {
         var result = 0;
-        result += Math.max(perf.audience - 30, 0);
+        result += Math.max(perf.audience - TRAGEDY_AUDIENCE_LIMIT, result);
         // add extra credit for every ten comedy attendees
         if ("comedy".equals(play.type)) {
-            result += Math.floor(perf.audience / 5.0);
+            result += Math.floor(perf.audience / COMEDY_ATTENDEES);
         }
 
         return result;
