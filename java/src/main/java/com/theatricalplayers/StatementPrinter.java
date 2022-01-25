@@ -8,20 +8,28 @@ public class StatementPrinter {
 
     public String print(Invoice invoice, Map<String, Play> plays) {
         var totalAmount = 0;
-        var volumeCredits = 0;
+
         var result = String.format("Statement for %s\n", invoice.customer);
 
         for (var perf : invoice.performances) {
-
-            // add volume credits
-            volumeCredits += calculateVolumeCredits(getPlay(plays, perf), perf);
-
             // print line for this order
             result += String.format("  %s: %s (%s seats)\n", getPlay(plays, perf).name, formatUSD(calculateAmount(getPlay(plays, perf), perf)), perf.audience);
             totalAmount += calculateAmount(getPlay(plays, perf), perf);
         }
+
         result += String.format("Amount owed is %s\n", formatUSD(totalAmount));
-        result += String.format("You earned %s credits\n", volumeCredits);
+        result += String.format("You earned %s credits\n", getTotalVolume(plays, invoice));
+        return result;
+    }
+
+    private static int getTotalVolume(Map<String, Play> plays, Invoice invoice) {
+        var result = 0;
+
+        for (var perf : invoice.performances) {
+            // add volume credits
+            result += calculateVolumeCredits(getPlay(plays, perf), perf);
+        }
+
         return result;
     }
 
@@ -38,7 +46,7 @@ public class StatementPrinter {
         result += Math.max(perf.audience - 30, 0);
         // add extra credit for every ten comedy attendees
         if ("comedy".equals(play.type)) {
-            result += Math.floor(perf.audience / 5);
+            result += Math.floor(perf.audience / 5.0);
         }
 
         return result;
