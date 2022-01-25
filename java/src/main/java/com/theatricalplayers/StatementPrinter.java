@@ -17,10 +17,10 @@ public class StatementPrinter {
             volumeCredits += calculateVolumeCredits(getPlay(plays, perf), perf);
 
             // print line for this order
-            result += String.format("  %s: %s (%s seats)\n", getPlay(plays, perf).name, formatUSD(calculateAmount(getPlay(plays, perf), perf) / 100), perf.audience);
+            result += String.format("  %s: %s (%s seats)\n", getPlay(plays, perf).name, formatUSD(calculateAmount(getPlay(plays, perf), perf)), perf.audience);
             totalAmount += calculateAmount(getPlay(plays, perf), perf);
         }
-        result += String.format("Amount owed is %s\n", formatUSD(totalAmount / 100));
+        result += String.format("Amount owed is %s\n", formatUSD(totalAmount));
         result += String.format("You earned %s credits\n", volumeCredits);
         return result;
     }
@@ -30,7 +30,7 @@ public class StatementPrinter {
     }
 
     private static String formatUSD(int number) {
-        return NumberFormat.getCurrencyInstance(Locale.US).format(number);
+        return NumberFormat.getCurrencyInstance(Locale.US).format(number / 100);
     }
 
     private static int calculateVolumeCredits(Play play, Performance perf) {
