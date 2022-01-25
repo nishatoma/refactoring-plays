@@ -14,4 +14,5 @@ public final class PlayConstants {
     public static final int COMEDY_BONUS_AMOUNT = 10000;
     public static final int COMEDY_BASE_MULTIPLIER = 300;
     public static final int COMEDY_BONUS_MULTIPLIER = 500;
+    public static final int USD_FORMAT = 100;
 }

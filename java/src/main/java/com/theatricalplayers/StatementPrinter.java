@@ -40,7 +40,7 @@ public class StatementPrinter {
     }
 
     private static String formatUSD(int number) {
-        return NumberFormat.getCurrencyInstance(Locale.US).format(number / 100);
+        return NumberFormat.getCurrencyInstance(Locale.US).format(number / USD_FORMAT);
     }
 
     private static int calculateVolumeCredits(Play play, Performance perf) {
