@@ -13,9 +13,9 @@ public class StatementPrinter {
     }
 
     private String getPlainTextStatement(Invoice invoice, Map<String, Play> plays) {
-        StringBuilder result = new StringBuilder(String.format("Statement for %s\n", invoice.customer));
+        StringBuilder result = new StringBuilder(String.format("Statement for %s\n", invoice.getCustomer()));
 
-        for (var perf : invoice.performances) {
+        for (var perf : invoice.getPerformances()) {
             // print line for this order
             result.append(String.format("  %s: %s (%s seats)\n", getPlay(plays, perf).name,
                     formatUSD(calculateAmount(getPlay(plays, perf), perf)), perf.getAudience()));
@@ -29,7 +29,7 @@ public class StatementPrinter {
     private static int getTotalAmount(Map<String, Play> plays, Invoice invoice) {
         var result = 0;
 
-        for (var perf: invoice.performances) {
+        for (var perf: invoice.getPerformances()) {
             result += calculateAmount(getPlay(plays, perf), perf);
         }
 
@@ -39,7 +39,7 @@ public class StatementPrinter {
     private static int getTotalVolume(Map<String, Play> plays, Invoice invoice) {
         var result = 0;
 
-        for (var perf : invoice.performances) {
+        for (var perf : invoice.getPerformances()) {
             // add volume credits
             result += calculateVolumeCredits(getPlay(plays, perf), perf);
         }
