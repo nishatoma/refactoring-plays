@@ -9,7 +9,10 @@ import static util.PlayConstants.*;
 public class StatementPrinter {
 
     public String print(Invoice invoice, Map<String, Play> plays) {
+        return getPlainTextStatement(invoice, plays);
+    }
 
+    private String getPlainTextStatement(Invoice invoice, Map<String, Play> plays) {
         StringBuilder result = new StringBuilder(String.format("Statement for %s\n", invoice.customer));
 
         for (var perf : invoice.performances) {
