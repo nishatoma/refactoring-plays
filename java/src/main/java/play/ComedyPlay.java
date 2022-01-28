@@ -10,13 +10,12 @@ public class ComedyPlay extends Play {
 
     @Override
     public int getProfit(int audienceSize) {
-        var result = 0;
 
-        result = COMEDY_BASE_AMOUNT;
+        int result = COMEDY_BASE_AMOUNT + COMEDY_BASE_MULTIPLIER * audienceSize;
+
         if (audienceSize > COMEDY_AUDIENCE_LIMIT) {
             result += COMEDY_BONUS_AMOUNT + COMEDY_BONUS_MULTIPLIER * (audienceSize - COMEDY_AUDIENCE_LIMIT);
         }
-        result += COMEDY_BASE_MULTIPLIER * audienceSize;
 
         return result;
     }

@@ -13,7 +13,7 @@ public abstract class Play {
     public abstract int getProfit(int audienceSize);
 
     public int getVolumeCredits(int audienceSize) {
-        var result = 0;
+        int result = 0;
         return Math.max(audienceSize - TRAGEDY_AUDIENCE_LIMIT, result);
     }
 

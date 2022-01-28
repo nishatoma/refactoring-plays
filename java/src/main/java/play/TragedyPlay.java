@@ -10,7 +10,7 @@ public class TragedyPlay extends Play {
 
     @Override
     public int getProfit(int audienceSize) {
-        var result = 0;
+        int result = 0;
 
         result = TRAGEDY_BASE_AMOUNT;
 

@@ -26,9 +26,9 @@ public final class PlayUtils {
     }
 
     public static int getTotalAmount(Map<String, ? extends Play> plays, Invoice invoice) {
-        var result = 0;
+        int result = 0;
 
-        for (var perf : invoice.getPerformances()) {
+        for (Performance perf : invoice.getPerformances()) {
             result += getPlay(plays, perf).getProfit(perf.getAudience());
         }
 
@@ -36,9 +36,9 @@ public final class PlayUtils {
     }
 
     public static int getTotalVolume(Map<String, ? extends Play> plays, Invoice invoice) {
-        var result = 0;
+        int result = 0;
 
-        for (var perf : invoice.getPerformances()) {
+        for (Performance perf : invoice.getPerformances()) {
             // add volume credits
             result += getPlay(plays, perf).getVolumeCredits(perf.getAudience());
         }

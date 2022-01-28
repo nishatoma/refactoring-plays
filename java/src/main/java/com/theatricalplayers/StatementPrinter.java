@@ -2,11 +2,8 @@ package com.theatricalplayers;
 
 import play.Play;
 
-import java.text.NumberFormat;
-import java.util.Locale;
 import java.util.Map;
 
-import static util.PlayConstants.*;
 import static util.PlayUtils.*;
 
 public class StatementPrinter {
@@ -18,7 +15,7 @@ public class StatementPrinter {
     private String getPlainTextStatement(Invoice invoice, Map<String, ? extends Play> plays) {
         StringBuilder result = new StringBuilder(String.format("Statement for %s\n", invoice.getCustomer()));
 
-        for (var perf : invoice.getPerformances()) {
+        for (Performance perf : invoice.getPerformances()) {
             // print line for this order
             result.append(String.format("  %s: %s (%s seats)\n", getPlay(plays, perf).name,
                     formatUSD(getPlay(plays, perf).getProfit(perf.getAudience())), perf.getAudience()));
