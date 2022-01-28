@@ -1,24 +1,27 @@
 package com.theatricalplayers;
 
+import play.Play;
+
 import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Map;
 
 import static util.PlayConstants.*;
+import static util.PlayUtils.formatUSD;
 
 public class StatementPrinter {
 
-    public String print(Invoice invoice, Map<String, Play> plays) {
+    public String print(Invoice invoice, Map<String, ? extends Play> plays) {
         return getPlainTextStatement(invoice, plays);
     }
 
-    private String getPlainTextStatement(Invoice invoice, Map<String, Play> plays) {
+    private String getPlainTextStatement(Invoice invoice, Map<String, ? extends Play> plays) {
         StringBuilder result = new StringBuilder(String.format("Statement for %s\n", invoice.getCustomer()));
 
         for (var perf : invoice.getPerformances()) {
             // print line for this order
             result.append(String.format("  %s: %s (%s seats)\n", getPlay(plays, perf).name,
-                    formatUSD(calculateAmount(getPlay(plays, perf), perf)), perf.getAudience()));
+                    formatUSD(getPlay(plays, perf).getProfit(perf.getAudience())), perf.getAudience()));
         }
 
         result.append(String.format("Amount owed is %s\n", formatUSD(getTotalAmount(plays, invoice))));
@@ -26,67 +29,28 @@ public class StatementPrinter {
         return result.toString();
     }
 
-    private static int getTotalAmount(Map<String, Play> plays, Invoice invoice) {
+    private static int getTotalAmount(Map<String, ? extends Play> plays, Invoice invoice) {
         var result = 0;
 
-        for (var perf: invoice.getPerformances()) {
-            result += calculateAmount(getPlay(plays, perf), perf);
+        for (var perf : invoice.getPerformances()) {
+            result += getPlay(plays, perf).getProfit(perf.getAudience());
         }
 
         return result;
     }
 
-    private static int getTotalVolume(Map<String, Play> plays, Invoice invoice) {
+    private static int getTotalVolume(Map<String, ? extends Play> plays, Invoice invoice) {
         var result = 0;
 
         for (var perf : invoice.getPerformances()) {
             // add volume credits
-            result += calculateVolumeCredits(getPlay(plays, perf), perf);
+            result += getPlay(plays, perf).getVolumeCredits(perf.getAudience());
         }
 
         return result;
     }
 
-    private static Play getPlay(Map<String, Play> plays, Performance perf) {
+    private static Play getPlay(Map<String, ? extends Play> plays, Performance perf) {
         return plays.get(perf.getPlayID());
     }
-
-    private static String formatUSD(int number) {
-        return NumberFormat.getCurrencyInstance(Locale.US).format(number / USD_FORMAT);
-    }
-
-    private static int calculateVolumeCredits(Play play, Performance perf) {
-        var result = 0;
-        result += Math.max(perf.getAudience() - TRAGEDY_AUDIENCE_LIMIT, result);
-        // add extra credit for every ten comedy attendees
-        if ("comedy".equals(play.type)) {
-            result += Math.floor(perf.getAudience() / COMEDY_ATTENDEES);
-        }
-
-        return result;
-    }
-
-    private static int calculateAmount(Play play, Performance perf) {
-        var result = 0;
-
-        switch (play.type) {
-            case "tragedy":
-                result = TRAGEDY_BASE_AMOUNT;
-                if (perf.getAudience() > TRAGEDY_AUDIENCE_LIMIT) {
-                    result += TRAGEDY_BONUS_AMOUNT * (perf.getAudience() - TRAGEDY_AUDIENCE_LIMIT);
-                }
-                break;
-            case "comedy":
-                result = COMEDY_BASE_AMOUNT;
-                if (perf.getAudience() > COMEDY_AUDIENCE_LIMIT) {
-                    result += COMEDY_BONUS_AMOUNT + COMEDY_BONUS_MULTIPLIER * (perf.getAudience() - COMEDY_AUDIENCE_LIMIT);
-                }
-                result += COMEDY_BASE_MULTIPLIER * perf.getAudience();
-                break;
-            default:
-                throw new Error("unknown type: " + play.type);
-        }
-        return result;
-    }
-
 }

@@ -2,7 +2,7 @@ package com.theatricalplayers;
 
 public class Performance {
 
-    private String playID;
+    private final String playID;
     private int audience;
 
     public Performance(String playID, int audience) {
@@ -12,10 +12,6 @@ public class Performance {
 
     public String getPlayID() {
         return playID;
-    }
-
-    public void setPlayID(String playID) {
-        this.playID = playID;
     }
 
     public int getAudience() {

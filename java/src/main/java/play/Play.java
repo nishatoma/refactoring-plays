@@ -1,12 +1,21 @@
-package com.theatricalplayers;
+package play;
 
-public class Play {
+import static util.PlayConstants.COMEDY_ATTENDEES;
+import static util.PlayConstants.TRAGEDY_AUDIENCE_LIMIT;
+
+public abstract class Play {
 
     public String name;
-    public String type;
 
-    public Play(String name, String type) {
+    public Play(String name) {
         this.name = name;
-        this.type = type;
     }
+
+    public abstract int getProfit(int audienceSize);
+
+    public int getVolumeCredits(int audienceSize) {
+        var result = 0;
+        return Math.max(audienceSize - TRAGEDY_AUDIENCE_LIMIT, result);
+    }
+
 }

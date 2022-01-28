@@ -2,6 +2,9 @@ package com.theatricalplayers;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import play.ComedyPlay;
+import play.Play;
+import play.TragedyPlay;
 
 import java.util.List;
 import java.util.Map;
@@ -13,9 +16,9 @@ public class StatementPrinterTests {
     @Test
     void exampleStatement() {
         var plays = Map.of(
-                "hamlet", new Play("Hamlet", "tragedy"),
-                "as-like", new Play("As You Like It", "comedy"),
-                "othello", new Play("Othello", "tragedy"));
+                "hamlet", new TragedyPlay("Hamlet"),
+                "as-like", new ComedyPlay("As You Like It"),
+                "othello", new TragedyPlay("Othello"));
 
         var invoice = new Invoice("BigCo", List.of(
                 new Performance("hamlet", 55),
@@ -31,8 +34,8 @@ public class StatementPrinterTests {
     @Test
     void statementWithNewPlayTypes() {
         var plays = Map.of(
-                "henry-v", new Play("Henry V", "history"),
-                "as-like", new Play("As You Like It", "pastoral"));
+                "henry-v", new TragedyPlay("Henry V"),
+                "as-like", new TragedyPlay("As You Like It"));
 
         var invoice = new Invoice("BigCo", List.of(
                 new Performance("henry-v", 53),
@@ -40,6 +43,7 @@ public class StatementPrinterTests {
 
         var statementPrinter = new StatementPrinter();
 
-        Assertions.assertThrows(Error.class, () -> statementPrinter.print(invoice, plays));
+        // With the new implementation, we should not expect an exception!
+        Assertions.assertDoesNotThrow(() -> statementPrinter.print(invoice, plays));
     }
 }
