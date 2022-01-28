@@ -2,9 +2,7 @@ package com.theatricalplayers;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import play.ComedyPlay;
-import play.Play;
-import play.TragedyPlay;
+import play.*;
 
 import java.util.List;
 import java.util.Map;
@@ -34,8 +32,8 @@ public class StatementPrinterTests {
     @Test
     void statementWithNewPlayTypes() {
         var plays = Map.of(
-                "henry-v", new TragedyPlay("Henry V"),
-                "as-like", new TragedyPlay("As You Like It"));
+                "henry-v", new HistoricalComedyPlay("Henry V"),
+                "as-like", new PastoralTragedyPlay("As You Like It"));
 
         var invoice = new Invoice("BigCo", List.of(
                 new Performance("henry-v", 53),
