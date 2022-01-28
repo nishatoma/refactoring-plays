@@ -24,7 +24,8 @@ public class StatementPrinterTests {
                 new Performance("othello", 40)));
 
         StatementPrinter statementPrinter = new StatementPrinter();
-        String result = statementPrinter.print(invoice, plays);
+        Statement statement = new Statement(invoice, plays);
+        String result = statementPrinter.print(statement);
 
         verify(result);
     }
@@ -40,8 +41,9 @@ public class StatementPrinterTests {
                 new Performance("as-like", 55)));
 
         StatementPrinter statementPrinter = new StatementPrinter();
+        Statement statement = new Statement(invoice, plays);
 
         // With the new implementation, we should not expect an exception!
-        Assertions.assertDoesNotThrow(() -> statementPrinter.print(invoice, plays));
+        Assertions.assertDoesNotThrow(() -> statementPrinter.print(statement));
     }
 }

@@ -4,9 +4,17 @@ import static util.PlayConstants.TRAGEDY_AUDIENCE_LIMIT;
 
 public abstract class Play {
 
-    public String name;
+    private String name;
 
     public Play(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
         this.name = name;
     }
 
