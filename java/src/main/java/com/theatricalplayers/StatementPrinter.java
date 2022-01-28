@@ -7,7 +7,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import static util.PlayConstants.*;
-import static util.PlayUtils.formatUSD;
+import static util.PlayUtils.*;
 
 public class StatementPrinter {
 
@@ -27,30 +27,5 @@ public class StatementPrinter {
         result.append(String.format("Amount owed is %s\n", formatUSD(getTotalAmount(plays, invoice))));
         result.append(String.format("You earned %s credits\n", getTotalVolume(plays, invoice)));
         return result.toString();
-    }
-
-    private static int getTotalAmount(Map<String, ? extends Play> plays, Invoice invoice) {
-        var result = 0;
-
-        for (var perf : invoice.getPerformances()) {
-            result += getPlay(plays, perf).getProfit(perf.getAudience());
-        }
-
-        return result;
-    }
-
-    private static int getTotalVolume(Map<String, ? extends Play> plays, Invoice invoice) {
-        var result = 0;
-
-        for (var perf : invoice.getPerformances()) {
-            // add volume credits
-            result += getPlay(plays, perf).getVolumeCredits(perf.getAudience());
-        }
-
-        return result;
-    }
-
-    private static Play getPlay(Map<String, ? extends Play> plays, Performance perf) {
-        return plays.get(perf.getPlayID());
     }
 }

@@ -1,6 +1,5 @@
 package play;
 
-import static util.PlayConstants.COMEDY_ATTENDEES;
 import static util.PlayConstants.TRAGEDY_AUDIENCE_LIMIT;
 
 public abstract class Play {

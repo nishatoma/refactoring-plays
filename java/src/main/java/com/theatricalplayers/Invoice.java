@@ -27,4 +27,6 @@ public class Invoice {
     public void setPerformances(List<Performance> performances) {
         this.performances = performances;
     }
+
+
 }

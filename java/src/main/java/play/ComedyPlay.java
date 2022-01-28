@@ -1,7 +1,6 @@
 package play;
 
 import static util.PlayConstants.*;
-import static util.PlayConstants.COMEDY_BASE_MULTIPLIER;
 
 public class ComedyPlay extends Play {
 
@@ -27,6 +26,6 @@ public class ComedyPlay extends Play {
         // add extra credit for every ten comedy attendees
         // Please not COMEDY_ATTENDEES should be 10.0 and not 5.0, but it throws an error
         // in verify function...
-        return super.getVolumeCredits(audienceSize) + (int) Math.floor(audienceSize / COMEDY_ATTENDEES);
+        return (int) (super.getVolumeCredits(audienceSize) + Math.floor(audienceSize / COMEDY_ATTENDEES));
     }
 }
