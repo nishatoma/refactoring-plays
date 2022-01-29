@@ -10,14 +10,9 @@ public class TragedyPlay extends Play {
 
     @Override
     public int getProfit(int audienceSize) {
-        int result = 0;
-
-        result = TRAGEDY_BASE_AMOUNT;
-
         if (audienceSize > TRAGEDY_AUDIENCE_LIMIT) {
-            result += TRAGEDY_BONUS_AMOUNT * (audienceSize - TRAGEDY_AUDIENCE_LIMIT);
+            return TRAGEDY_BASE_AMOUNT + TRAGEDY_BONUS_AMOUNT * (audienceSize - TRAGEDY_AUDIENCE_LIMIT);
         }
-
-        return result;
+        return TRAGEDY_BASE_AMOUNT;
     }
 }
